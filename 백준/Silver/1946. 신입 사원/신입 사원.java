@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -10,21 +8,21 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		int T = Integer.parseInt(br.readLine());
-		int N , count = 0 , standard = 0;
-		int score[][];
+		int N , count = 0 , standard = 0 , x , y;
+		int score[];
 		for(int i = 0; i < T ; i++) {
 			N = Integer.parseInt(br.readLine());
 			count = 1;
-			standard = 0 ;
-			score = new int[N][3];
+			standard = 1;
+			score = new int[N + 1];
 			for(int j = 0; j < N; j++) {
 				st = new StringTokenizer(br.readLine() , " ");
-				score[j][0] = Integer.parseInt(st.nextToken());
-				score[j][1] = Integer.parseInt(st.nextToken());
+				x = Integer.parseInt(st.nextToken());
+				y = Integer.parseInt(st.nextToken());
+				score[x] = y;
 			}
-			Arrays.sort(score , Comparator.comparingInt(o1 -> o1[0]));
-			for(int j = 1; j < N; j++) {
-				if(score[standard][1] > score[j][1] || score[standard][0] > score[j][0]) {
+			for(int j = 2; j <= N; j++) {
+				if(score[j] < score[standard]) {
 					standard = j;
 					count++;
 				}
