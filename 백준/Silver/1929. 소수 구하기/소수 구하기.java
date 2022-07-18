@@ -12,7 +12,8 @@ public class Main {
 		int N = Integer.parseInt(st.nextToken());
 		
 		boolean D[] = new boolean[N + 1];
-
+		StringBuilder sb = new StringBuilder();
+		
 		D[0] = true;
 		D[1] = true;
 		
@@ -24,8 +25,9 @@ public class Main {
 		
 		for(int i = M; i <= N; i++) {
 			if(!D[i]) {
-				System.out.println(i);
+				sb.append(i).append("\n");
 			}
 		}
+		System.out.println(sb);
 	}
 }
