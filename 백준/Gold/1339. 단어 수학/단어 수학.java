@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class Main {
 
@@ -10,28 +9,21 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		String str[] = new String[N];
-		int arr[][] = new int[26][2];
+		int arr[] = new int[26];
 		int i;
 		long total = 0;
 		
 		for(i = 0; i < N; i++) {
 			str[i] = br.readLine();
 			for(int j = 0; j < str[i].length() ; j++) {
-				arr[(int)str[i].charAt(j) - 65][0] += (int) Math.pow(10 , str[i].length() - j);
-				arr[(int)str[i].charAt(j) - 65][1] = (int)str[i].charAt(j);
+				arr[(int)str[i].charAt(j) - 'A'] += (int) Math.pow(10 , str[i].length() - j) / 10;
 			}
 		}
 		
-		Arrays.sort(arr , Comparator.comparing((int [] o1) -> o1[0]).reversed());
-
-		for(int j = 0; j < str.length ; j++) {
-			for(i = 0; i < 10 ; i++) {
-				str[j] = str[j].replace(String.valueOf((char)arr[i][1]) , Integer.toString(9 - i));
-			}
-		}
+		Arrays.sort(arr);
 		
-		for(i = 0; i < str.length; i++) {
-			total += Integer.parseInt(str[i]);		
+		for(int j = 25; j > 15 ; j--) {
+			total += arr[j] * (j - 16);
 		}
 		
 		System.out.println(total);
