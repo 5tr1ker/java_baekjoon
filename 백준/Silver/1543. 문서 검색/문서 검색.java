@@ -6,22 +6,11 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int count = 0 , index = 0;
 		String a1 = br.readLine();
 		String a2 = br.readLine();
 		
-		while(true) {
-			index = a1.indexOf(a2);
-			if(index == -1) break;
-			else {
-				a1 = a1.substring(index);
-				a1 = a1.replaceFirst(a2, "");
-				count++;
-			}
-			
-		}
+		String b1 = a1.replace(a2 , "");
 		
-		System.out.println(count);
+		System.out.println((a1.length() - b1.length()) / a2.length());
 	}
-
 }
