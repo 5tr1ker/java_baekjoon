@@ -13,7 +13,7 @@ public class Main {
 		int Weight = Integer.parseInt(st.nextToken());
 		
 		int item[][] = new int[N + 1][2];
-		int dp[][] = new int[N + 1][Weight + 1];
+		int dp[] = new int[Weight + 1];
 		
 		for(int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine() , " ");
@@ -22,15 +22,12 @@ public class Main {
 		}
 		
 		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= Weight; j++) {
-				if(item[i][0] <= j) {
-					dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - item[i][0]] + item[i][1]);
-				}
-				dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
+			for(int j = Weight; j - item[i][0] >= 0 ; j--) {
+				dp[j] = Math.max(dp[j], dp[j - item[i][0]] + item[i][1]);
 			}
 		}
 		
-		System.out.println(dp[N][Weight]);
+		System.out.println(dp[Weight]);
 	}
 
 }
