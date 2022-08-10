@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -9,8 +10,9 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		StringTokenizer st = new StringTokenizer(br.readLine() , "<> " , true);
+		StringBuffer sb = new StringBuffer();
+		Stack<Character> stack = new Stack<>();
 		
-		StringBuffer sb;
 		boolean isChange = true;
 		String str;
 		
@@ -19,16 +21,20 @@ public class Main {
 			if(str.equals("<")) {
 				isChange = false;
 			} else if (str.equals(">")) {
-					isChange = true;
+				isChange = true;
 			}
 			
 			if(!isChange) {
-				System.out.printf("%s" , str);
+				sb.append(str);
 			} else {
-				sb = new StringBuffer(str);
-				System.out.printf("%s" , sb.reverse().toString());
+				for(int i = 0; i < str.length(); i++) {
+					stack.push(str.charAt(i));
+				}
+				
+				while(!stack.isEmpty()) sb.append(stack.pop());
 			}
+			
 		}
+		System.out.println(sb);
 	}
-
 }
