@@ -12,25 +12,28 @@ public class Main {
 		Stack<Character> stack = new Stack<Character>();
 		
 		StringBuilder sb = new StringBuilder();
+		int str2Length = str_2.length();
 		
 		for(int i = 0; i < str.length(); i++) {
 			stack.add(str.charAt(i));
-			sb.append(str.charAt(i));
-			if(str_2.charAt(str_2.length() - 1) == str.charAt(i)) {
-				for(int j = 1; j <= str_2.length(); j++) {
-					if(stack.search(str_2.charAt(str_2.length() - j)) != j) {
+			if(str_2.charAt(str2Length - 1) == str.charAt(i)) {
+				for(int j = 1; j <= str2Length; j++) {
+					if(stack.search(str_2.charAt(str2Length - j)) != j) {
 						break;
 					}
 					if(j == str_2.length()) {
-						for(int z = 0; z < str_2.length(); z++) {
+						for(int z = 0; z < str2Length; z++) {
 							stack.pop();
-							sb.deleteCharAt(sb.length() - 1);
 						}
 					}
 				}
 			}
-			
 		}
+		
+		for(char ch : stack) {
+			sb.append(ch);
+		}
+		
 		if(stack.isEmpty()) System.out.println("FRULA");
 		else System.out.println(sb);
 	}
