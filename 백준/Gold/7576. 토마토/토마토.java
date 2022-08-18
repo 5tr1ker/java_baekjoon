@@ -9,7 +9,6 @@ public class Main {
 	
 	private static int N , M;
 	private static int graph[][];
-	private static boolean check[][];
 	private static int count = 0;
 	
 	public static void bfs(Queue<int []> queue) {
@@ -26,8 +25,7 @@ public class Main {
 			for(int i = 0; i < 4; i++) {
 				if(x + coorX[i] < 0 || x + coorX[i] >= M || y + coorY[i] < 0 || y + coorY[i] >= N) continue;
 				
-				if(graph[y + coorY[i]][x + coorX[i]] != -1 && !check[y + coorY[i]][x + coorX[i]]) {
-					check[y + coorY[i]][x + coorX[i]] = true;
+				if(graph[y + coorY[i]][x + coorX[i]] == 0) {
 					queue2.add(new int[] {y + coorY[i] , x + coorX[i]});
 					graph[y + coorY[i]][x + coorX[i]] = 1;
 				}
@@ -47,7 +45,6 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 		N = Integer.parseInt(st.nextToken());
 		graph = new int[N][M];
-		check = new boolean[N][M];
 		
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine() , " ");
@@ -59,9 +56,8 @@ public class Main {
 		Queue<int []> queue = new LinkedList<int []>();
 		for(int i = 0; i < N; i++) {
 			for(int j = 0; j < M; j++) {
-				if(graph[i][j] == 1 && !check[i][j]) {
+				if(graph[i][j] == 1) {
 					queue.add(new int[] {i , j});
-					check[i][j] = true;
 				}
 			}
 		}
@@ -81,5 +77,4 @@ public class Main {
 		if(checking) System.out.println(count - 1); 
 		else System.out.println(-1);
 	}
-
 }
