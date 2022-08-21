@@ -29,9 +29,8 @@ public class Main {
 			
 			// BFS
 			Queue<int []> queue = new LinkedList<int []>();
-			int coorX[] = {-1 , 1 , 0 , 0};
-			int coorY[] = {0 , 0 , -1 , 1};
-			int diag[] = {1 , -1 , -1 , 1};
+			int coorX[] = {-1 , 1 , 0 , 0 , -1 , -1 , 1 , 1};
+			int coorY[] = {0 , 0 , -1 , 1 , 1 , -1 , -1 , 1};
 			int count = 0;
 			for(int i = 0; i < H; i++) {
 				for(int j = 0; j < W; j++) {
@@ -43,23 +42,14 @@ public class Main {
 						int index[] = queue.poll();
 						int index_X = index[1];
 						int index_Y = index[0];
-						for(int z = 0; z < 4; z++) {
+						for(int z = 0; z < 8; z++) {
 							// 가로 세로
 							if(index_X + coorX[z] < 0 || index_X + coorX[z] >= W || index_Y + coorY[z] < 0 || index_Y + coorY[z] >= H) continue;
 							if(arr[index_Y + coorY[z]][index_X + coorX[z]] == 1) { 
 								arr[index_Y + coorY[z]][index_X + coorX[z]] = 0;
 								queue.add(new int[] {index_Y + coorY[z] , index_X+coorX[z]});
 							}
-							
-							// 대각
-							
-							if(diag[(z + 1) % 4] + index_X < 0 || diag[z] + index_Y < 0 || diag[(z + 1) % 4] + index_X >= W || diag[z] + index_Y >= H) {
-								continue;
-							}
-							if(arr[index_Y + diag[z]][index_X + diag[(z + 1) % 4]] == 1) {
-								arr[index_Y + diag[z]][index_X + diag[(z + 1) % 4]] = 0;
-								queue.add(new int[] {index_Y + diag[z] , index_X + diag[(z + 1) % 4] });
-							}
+						
 						}
 						
 					}
