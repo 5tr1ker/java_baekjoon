@@ -1,62 +1,36 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 	
 	private static int arr[][];
 	private static int N;
+	private static boolean arr2[][];
 	
-	public static int bfs(int index) {
-		boolean arr2[][] = new boolean[N][N];
-		
-		int count = 0;
-		Queue<int []> queue = new LinkedList<int[]>();
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(arr[i][j] <= index) { // 침수 여부
-					arr2[i][j] = true;
-				}
-			}
-		}
-		
+	public static int dfs(int Y , int X , int height) {
 		int coorX[] = {-1,1,0,0};
 		int coorY[] = {0,0,-1,1};
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(!arr2[i][j]) {
-					count++;
-					queue.add(new int[] {i , j});
-					arr2[i][j] = true; // 확인 여부
-				}
-				
-				while(!queue.isEmpty()) {
-					int data[] = queue.poll();
-					int X = data[1];
-					int Y = data[0];
-					
-					for(int z = 0; z<4; z++) {
-						if(X + coorX[z] < 0 || X + coorX[z] >= N || Y + coorY[z] < 0 || Y + coorY[z] >= N) continue;
-						
-						if(!arr2[Y + coorY[z]][X + coorX[z]]) {
-							arr2[Y + coorY[z]][X + coorX[z]] = true;
-							queue.add(new int[] {Y + coorY[z] , X + coorX[z]});
-						}
-					}
-				}
+		
+		for(int i = 0; i < 4; i++) {
+			if(X + coorX[i] < 0 || X + coorX[i] >= N || Y + coorY[i] < 0 || Y + coorY[i] >= N) continue;
+			
+			if(arr[Y + coorY[i]][X + coorX[i]] > height && !arr2[Y + coorY[i]][X + coorX[i]]) {
+				arr2[Y + coorY[i]][X + coorX[i]] = true;
+				dfs(Y + coorY[i] , X + coorX[i] , height);
 			}
 		}
-		return count;
+		
+		return 1;
 	}
-
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		N = Integer.parseInt(br.readLine());
 		arr = new int[N][N];
+		arr2 = new boolean[N][N];
 		
 		StringTokenizer st;
 		int maxValue = 0 , index = 0;
@@ -69,10 +43,18 @@ public class Main {
 			}
 		}
 		
-		int result;
 		for(int i = index; i >= 0; i--) {
-			result = bfs(i);
-			if(result > maxValue) maxValue = result;
+			int count = 0;
+			arr2 = new boolean[N][N];
+			for(int j = 0; j < N; j++) {
+				for(int z = 0; z < N; z++) {
+					if(arr[j][z] > i && !arr2[j][z]) {
+						arr2[j][z] = true;
+						count += dfs(j , z , i); // 안전지대 찾기
+					}
+				}
+			}
+			maxValue = Math.max(maxValue, count);
 		}
 		
 		System.out.println(maxValue);
