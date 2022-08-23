@@ -5,6 +5,14 @@ import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
 public class Main {
+	
+	static class Point{
+		int x , y;
+		Point(int y , int x) {
+			this.y = y;
+			this.x = x;
+		}
+	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -12,7 +20,7 @@ public class Main {
 		int arr[][];
 		int testCase = Integer.parseInt(br.readLine());
 		
-		ArrayDeque<int []> q = new ArrayDeque<>();
+		ArrayDeque<Point> q = new ArrayDeque<>();
 		
 		StringTokenizer st;
 		int coorX[] = {-2 , -2 , 2 , 2 , -1 , 1 , -1 , 1};
@@ -25,7 +33,7 @@ public class Main {
 			st = new StringTokenizer(br.readLine(), " ");
 			
 			int start[] = {Integer.parseInt(st.nextToken()) , Integer.parseInt(st.nextToken())};
-			q.add(new int[] {start[0] , start[1]});
+			q.add(new Point(start[0] , start[1]));
 			
 			st = new StringTokenizer(br.readLine() , " ");
 			int end[] = {Integer.parseInt(st.nextToken()) , Integer.parseInt(st.nextToken())};
@@ -35,16 +43,16 @@ public class Main {
 			}
 			
 			while(!q.isEmpty()) {
-				int index[] = q.poll();
-				int Y = index[0];
-				int X = index[1];
+				Point point = q.poll();
+				int Y = point.y;
+				int X = point.x;
 				
 				for(int j = 0; j < 8; j++) {
 					if(X + coorX[j] < 0 || X + coorX[j] >= size || Y + coorY[j] < 0 || Y + coorY[j] >= size) continue;
 					
 					if(arr[Y + coorY[j]][X + coorX[j]] == 0) {
 						arr[Y + coorY[j]][X + coorX[j]] += arr[Y][X] + 1;
-						q.add(new int[] {Y + coorY[j] , X + coorX[j]});
+						q.add(new Point(Y + coorY[j] , X + coorX[j]));
 					}
 				}
 			}
