@@ -58,8 +58,8 @@ public class Main {
 				int X = point.x + coorX[i];
 				if(X < 0 || X >= M || Y >= N || Y < 0) continue;
 				
-				if(arr[Y][X] != 1) { // 벽이 아님
-					if(!check[Y][X][0] && !point.destroy) { // 벽을 부순적이 없을 때
+				if(arr[Y][X] == 0) { // 벽이 아님
+					if(!point.destroy && !check[Y][X][0]) { // 벽을 부순적이 없을 때
 						check[Y][X][0] = true;
 						queue.add(new point(X , Y , cnt , false));
 					} 
