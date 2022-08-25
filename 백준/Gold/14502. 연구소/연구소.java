@@ -63,30 +63,29 @@ public class Main {
 			for(int j = 0; j < M; j++)
 				virus_arr[i][j] = arr[i][j];
 		
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if(virus_arr[i][j] == 2) {
+		for(int i = 0; i < N; i++) 
+			for(int j = 0; j < M; j++) 
+				if(virus_arr[i][j] == 2) 
 					queue.add(new int[] {i , j});
-				}
+		
+		
+		while(!queue.isEmpty()) {
+			int index[] = queue.poll();
+			int Y = index[0];
+			int X = index[1];
+			
+			for(int z = 0; z < 4; z++) {
+				int X2 = X + coorX[z];
+				int Y2 = Y + coorY[z];
+				if(X2 < 0 || X2 >= M || Y2 < 0 || Y2 >= N) continue;
 				
-				while(!queue.isEmpty()) {
-					int index[] = queue.poll();
-					int Y = index[0];
-					int X = index[1];
-					
-					for(int z = 0; z < 4; z++) {
-						int X2 = X + coorX[z];
-						int Y2 = Y + coorY[z];
-						if(X2 < 0 || X2 >= M || Y2 < 0 || Y2 >= N) continue;
-						
-						if(virus_arr[Y2][X2] == 0) {
-							virus_arr[Y2][X2] = 2;
-							queue.add(new int[] {Y2 , X2});
-						}
-					}
+				if(virus_arr[Y2][X2] == 0) {
+					virus_arr[Y2][X2] = 2;
+					queue.add(new int[] {Y2 , X2});
 				}
 			}
 		}
+		
 		save_bfs();
 	}
 	
