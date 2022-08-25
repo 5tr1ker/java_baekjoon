@@ -68,9 +68,9 @@ public class Main {
 				if(virus_arr[i][j] == 2)
 					virus_count2 = virus_diffusion(i, j, virus_count2);					
 				
-				if(virus_count2 > virus_count) break;
+				if(virus_count2 > virus_count) return;
 			}
-			if(virus_count2 > virus_count) break;
+			if(virus_count2 > virus_count) return;
 		}
 		
 		save_bfs();
