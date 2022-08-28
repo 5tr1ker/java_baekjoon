@@ -9,40 +9,40 @@ import java.util.StringTokenizer;
 public class Main {
 	
 	static ArrayList<Integer>[] list;
-	static boolean group[];
-	static boolean check[];
+	static int group[];
 	
-	public static boolean findIndex(int E) {
+	public static void findIndex(int E) {
 		
 		Queue<Integer> queue = new LinkedList<Integer>();
 		
 		for(int z = 1; z <= E; z++) {
-			if(!check[z]) {
-				for(int j = 0; j < list[z].size(); j++) queue.add(list[z].get(j));
+			if(group[z] == 0) {
+				queue.add(z);
+				group[z] = 1;
 			}
 			
 			while(!queue.isEmpty()) {
 				int index = queue.poll();
-				int size = list[index].size();
-				check[index] = true;
-				boolean setGroup = !group[index];
 					
-				for(int j = 0; j < size; j++) {
-					if(check[list[index].get(j)] && group[index] == group[list[index].get(j)]) {
-						return false;
-					}
+				for(int j = 0; j < list[index].size() ; j++) {
 					
-					if(!check[list[index].get(j)]) {
-						group[list[index].get(j)] = setGroup;
-						check[list[index].get(j)] = true;
+					if(group[list[index].get(j)] == 0) {
 						queue.add(list[index].get(j));
+						if(group[index] == 2) group[list[index].get(j)] = 1;
+						if(group[index] == 1) group[list[index].get(j)] = 2;
 					}
+					
+					if(group[index] == group[list[index].get(j)]) {
+						System.out.println("NO");
+						return;
+					}
+					
 				}
 				
 			}
 		}
 		
-		return true;
+		System.out.println("YES");
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -56,8 +56,7 @@ public class Main {
 			int V = Integer.parseInt(st.nextToken());
 			int E = Integer.parseInt(st.nextToken());
 			list = new ArrayList[V + 1];
-			group = new boolean[V + 1];
-			check = new boolean[V + 1];
+			group = new int[V + 1];
 			
 			for(int i = 1; i <= V; i++) list[i] = new ArrayList<>();
 			
@@ -73,9 +72,8 @@ public class Main {
 				
 			}
 			
-			if(findIndex(V)) System.out.println("YES");
-			else System.out.println("NO");
+			findIndex(V);
+			
 		}
 	}
-
 }
