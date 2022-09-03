@@ -18,7 +18,6 @@ public class Main {
 
 		check[cy][cx] = true;
 
-
 		for (int i = 0; i < 4; i++) {
 			int dire_x = cx + coorX[i];
 			int dire_y = cy + coorY[i];
@@ -32,6 +31,22 @@ public class Main {
 
 			if (map[dire_y][dire_x] > 0 && !check[dire_y][dire_x]) { // 육지 일경우
 				dfs(dire_y, dire_x);
+			}
+		}
+	}
+
+	public static void dfs_find(int cy, int cx) { // 찾기 ....
+
+		for (int z = 0; z < 4; z++) {
+			int dx = cx + coorX[z];
+			int dy = cy + coorY[z];
+
+			if (dx < 0 || dy < 0 || dx >= x || dy >= y)
+				continue;
+
+			if (map[dy][dx] > 0 && !check[dy][dx]) {
+				check[dy][dx] = true;
+				dfs_find(dy, dx);
 			}
 		}
 	}
@@ -55,69 +70,43 @@ public class Main {
 
 		int count = 0;
 		flag = false; // 변환된게 있나?
-		
+
+		// 섬이 있나 확인 BFS
+
 		while (true) {
 			flag = false;
 			check = new boolean[y][x];
 			
-			// 섬이 있나 확인 BFS
-			Queue<int []> queue = new LinkedList<int[]>();
-			
 			for (int i = 0; i < y; i++) {
 				for (int j = 0; j < x; j++) {
-					if(map[i][j] > 0 && !check[i][j]) { // 육지 발견
-						queue.add(new int[]{i , j});
-						
+					if (map[i][j] > 0 && !check[i][j]) { // 육지 발견
 						if (flag) {
 							System.out.println(count);
 							return;
 						}
-						
-						while(!queue.isEmpty()) {
-							int data[] = queue.poll();
-							int lx = data[1];
-							int ly = data[0];
-							flag = true;
-							
-							
-							for(int z = 0; z < 4; z++) {
-								int dx = lx + coorX[z];
-								int dy = ly + coorY[z];
-								
-								if(dx < 0 || dy < 0 || dx >= x || dy >= y) continue;
-								
-								if(map[dy][dx] > 0 && !check[dy][dx]) {
-									queue.add(new int[]{dy , dx});
-									check[dy][dx] = true;
-								}
-								
-							}
-							
-						}
-						
+
+						dfs_find(i, j);
+						flag = true;
+
 					}
 				}
 			}
+
 			flag = false;
 			check = new boolean[y][x];
-			
+
 			for (int i = 0; i < y; i++) {
 				for (int j = 0; j < x; j++) {
 					if (map[i][j] > 0 && !check[i][j]) {
+						count++;
 						dfs(i, j);
 					}
 				}
 			}
 			
-			if (!flag) {
-				break; // 변화가 있나?
-			}
-			count++;
+			if(!flag) break;
 		}
 
-
 		System.out.println(0);
-
 	}
-
 }
