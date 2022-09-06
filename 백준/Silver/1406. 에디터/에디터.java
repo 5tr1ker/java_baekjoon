@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Main {
 
@@ -9,40 +10,39 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		String str = br.readLine();
-		Stack<Character> left = new Stack<Character>();
-		Stack<Character> right = new Stack<Character>();
+		LinkedList<Character> list = new LinkedList<Character>();
 		
 		for(int i = 0; i < str.length(); i++) {
-			left.push(str.charAt(i));
+			list.add(str.charAt(i));
 		}
 		
 		int N = Integer.parseInt(br.readLine());
+		ListIterator<Character> iter = list.listIterator();
+		while(iter.hasNext()) iter.next();
 		
 		for(int i = 0; i < N; i++) {
 			String input[] = br.readLine().split(" ");
 			if(input[0].equals("P")) {
-				left.push(input[1].charAt(0));
+				iter.add(input[1].charAt(0));
 			}
 			else if(input[0].equals("L")) {
-				if(left.size() > 0) {
-					right.push(left.pop());
-				}
+				if(iter.hasPrevious()) iter.previous();
 			}
 			else if(input[0].equals("D")) {
-				if(0 < right.size()) {
-					left.push(right.pop());
-				}
+				if(iter.hasNext()) iter.next();
 			}
 			else if(input[0].equals("B")) {
-				if(left.size() > 0) left.pop();
+				if(iter.hasPrevious()) {
+					iter.previous();
+					iter.remove();
+				}
 			}
 		}
 		
-		while(left.size() > 0) right.push(left.pop());
-		
 		StringBuilder sb = new StringBuilder();
-		while(right.size() > 0) sb.append(right.pop());
+		for(Character chr : list) sb.append(chr);
 		
 		System.out.println(sb);
 	}
+
 }
