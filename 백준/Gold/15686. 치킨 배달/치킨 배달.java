@@ -9,8 +9,8 @@ public class Main {
 	static public int N, M;
 	static public int map[][]; // 0-> 빈 1-> 집 2-> 치킨집 3-> 선택된 치킨
 	static public int count = Integer.MAX_VALUE;
-	static public ArrayList<String> chickenList;
-	static public ArrayList<String> houseList;
+	static public ArrayList<int[]> chickenList;
+	static public ArrayList<int[]> houseList;
 	static public boolean check[];
 
 	public static void selectChicken(int i , int index) {
@@ -34,13 +34,11 @@ public class Main {
 		int total = 0;
 		for (int i = 0; i < houseList.size(); i++) { // 모든 집을 비교
 			temp = Integer.MAX_VALUE;
-			String[] houseData = houseList.get(i).split(",");
 
 			for (int j = 0; j < chickenList.size() ; j++) { // 치킨집
 				if (check[j]) {
-					String[] chickenData = chickenList.get(j).split(",");
-					temp = Math.min(temp, Math.abs(Integer.parseInt(chickenData[0]) - Integer.parseInt(houseData[0]))
-							+ Math.abs(Integer.parseInt(chickenData[1]) - Integer.parseInt(houseData[1])));
+					temp = Math.min(temp, Math.abs(chickenList.get(j)[0] - houseList.get(i)[0])
+							+ Math.abs(chickenList.get(j)[1] - houseList.get(i)[1]));
 				}
 			}
 			total += temp;
@@ -57,8 +55,8 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 
 		map = new int[N][N];
-		chickenList = new ArrayList<String>();
-		houseList = new ArrayList<String>();
+		chickenList = new ArrayList<int[]>();
+		houseList = new ArrayList<int[]>();
 
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -66,9 +64,9 @@ public class Main {
 				map[i][j] = Integer.parseInt(st.nextToken());
 
 				if (map[i][j] == 1) {
-					houseList.add(i + "," + j);
+					houseList.add(new int[] {i,j});
 				} else if (map[i][j] == 2) {
-					chickenList.add(i + "," + j);
+					chickenList.add(new int[] {i,j});
 				}
 			}
 		}
