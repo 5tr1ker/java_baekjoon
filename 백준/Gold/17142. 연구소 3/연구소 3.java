@@ -41,67 +41,66 @@ public class Main {
 			st = new StringTokenizer(br.readLine() , " ");
 			for(int j = 0; j < N; j++) {
 				arr[i][j] = Integer.parseInt(st.nextToken());
-				if (arr[i][j] == 0) {
-                    originEmptySpace++;
-                } else if (arr[i][j] == 2) {
-                    viruses.add(new Virus(i, j, 0));
-                }
+				if(arr[i][j] == 0 ) originEmptySpace++;
+				if(arr[i][j] == 2 ) viruses.add(new Virus(j , i , 0));
 			}
 		}
 		
-		if (originEmptySpace == 0) {
-            System.out.println(0);
-        } else {
-            selectVirus(0, 0);
-            System.out.println(resultMinTime == Integer.MAX_VALUE ? -1 : resultMinTime);
-        }
+		if(originEmptySpace == 0) {
+			System.out.println(0);
+			return;
+		}
+		
+		findVirus(0 , 0);
+		
+		System.out.println(resultMinTime == Integer.MAX_VALUE ? -1 : resultMinTime);
 	}
 	
-	static void selectVirus(int start, int selectCount) {
-        if (selectCount == M) {
-            spreadVirus(originEmptySpace);
-            return;
-        }
-
-        for (int i = start; i < viruses.size(); i++) {
-            active[selectCount] = viruses.get(i);
-            selectVirus(i + 1, selectCount + 1);
-        }
-    }
-
-	static void spreadVirus(int emptySpace) {
-        Queue<Virus> q = new LinkedList<>();
-        boolean[][] infected = new boolean[N][N];
-
-        for (int i = 0; i < M; i++) {
-            Virus virus = active[i];
-            infected[virus.x][virus.y] = true;
-            q.add(virus);
-        }
-
-        while (!q.isEmpty()) {
-            Virus virus = q.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int nx = virus.x + dx[i];
-                int ny = virus.y + dy[i];
-
-                if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
-                if (infected[nx][ny] || arr[nx][ny] == 1) continue;
-
-                if (arr[nx][ny] == 0) {
-                    emptySpace--;
-                }
-
-                if (emptySpace == 0) {
-                    resultMinTime = Math.min(resultMinTime, virus.time + 1);
-                    return;
-                }
-
-                infected[nx][ny] = true;
-                q.add(new Virus(nx, ny, virus.time + 1));
-            }
-        }
-    }
+	public static void findVirus(int idx , int count) {
+		if(count == M) {
+			spreadVirus(originEmptySpace);
+			return;
+		}
+		
+		for(int i = idx ; i < viruses.size(); i++) {
+			active[count] = viruses.get(i);
+			findVirus(i + 1 , count + 1);
+		}
+	}
+	
+	public static void spreadVirus(int time) {
+		Queue<Virus> queue = new LinkedList<Virus>();
+		boolean check[][] = new boolean[N][N];
+		
+		for(int i = 0; i < M; i++) {
+			Virus a = active[i];
+			queue.add(a);
+			check[a.y][a.x] = true;
+		}
+		
+		while(!queue.isEmpty()) {
+			Virus data = queue.poll();
+			
+			for(int i = 0; i < 4; i++) {
+				int nx = data.x + dx[i];
+				int ny = data.y + dy[i];
+				
+				if(nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
+				if(arr[ny][nx] == 1 || check[ny][nx]) continue;
+				
+				if(arr[ny][nx] == 0) {
+					time--;
+				}
+				
+				if(time == 0) {
+					resultMinTime = Math.min(data.time + 1, resultMinTime);
+					return;
+				}
+				
+				check[ny][nx] = true;
+				queue.add(new Virus(nx , ny , data.time + 1));
+			}
+		}
+	}
 	
 }
