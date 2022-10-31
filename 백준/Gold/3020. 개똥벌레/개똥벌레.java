@@ -6,48 +6,50 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		int n = Integer.parseInt(st.nextToken());
-		int h = Integer.parseInt(st.nextToken());
-		
-		int[] down = new int[n/2];
-		int[] up = new int[n/2];
-		for(int i=0; i<n/2; i++) {
-			int a = Integer.parseInt(br.readLine());
-			int b = Integer.parseInt(br.readLine());
-			down[i]=a;
-			up[i]=b;
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		int N = Integer.parseInt(st.nextToken());
+		int H = Integer.parseInt(st.nextToken());
+		int top[] = new int[N / 2];
+		int down[] = new int[N / 2];
+
+		for (int i = 0; i < N / 2; i++) {
+			down[i] = Integer.parseInt(br.readLine());
+			top[i] = Integer.parseInt(br.readLine());
 		}
-		Arrays.sort(up);
 		Arrays.sort(down);
-		int min = n;
-		int cnt=0;
-		for(int i=1; i<h+1; i++) {
-			int conflict =binarySearch(0, n/2, i, down) + binarySearch(0, n/2, h-i+1, up);
-			if(min == conflict) {
-				cnt++;
-				continue;
-			}
-			if(min > conflict) {
+		Arrays.sort(top);
+
+		int min = Integer.MAX_VALUE;
+		int count = 0;
+		for (int i = 1; i <= H; i++) {
+			int conflict = binarySearch(0, N / 2, i, down) + binarySearch(0, N / 2, H - i + 1, top);
+			if (conflict < min) {
 				min = conflict;
-				cnt=1;
+				count = 1;
+			}
+			if (conflict == min) {
+				count++;
 			}
 		}
-		System.out.println(min +" " +cnt);
+
+		System.out.printf("%d %d\n", min, count - 1);
 	}
-	static int binarySearch(int left, int right, int h, int[] arr) {
-		while(left<right) {
-			int mid = (left+right)/2;
+
+	public static int binarySearch(int bottom, int top, int height, int arr[]) {
+
+		while (top > bottom) {
+			int half = (top + bottom) / 2;
 			
-			if(arr[mid] >= h) {
-				right = mid;
-			}else {
-				left = mid+1;
+			if (arr[half] >= height) {
+				top = half;
+			} else {
+				bottom = half + 1;
 			}
+
 		}
-        return arr.length-right;
+		return arr.length - top;
 	}
+
 }
