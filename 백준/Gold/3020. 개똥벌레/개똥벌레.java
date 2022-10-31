@@ -23,13 +23,14 @@ public class Main {
 
 		int min = Integer.MAX_VALUE;
 		int count = 0;
+
 		for (int i = 1; i <= H; i++) {
-			int conflict = binarySearch(0, N / 2, i, down) + binarySearch(0, N / 2, H - i + 1, top);
-			if (conflict < min) {
+			int conflict = binarySearch(0 , N / 2 , i , down) + binarySearch(0 , N / 2 , H - i + 1 , top);
+			if(conflict < min) {
 				min = conflict;
 				count = 1;
 			}
-			if (conflict == min) {
+			if(conflict == min) {
 				count++;
 			}
 		}
@@ -37,19 +38,18 @@ public class Main {
 		System.out.printf("%d %d\n", min, count - 1);
 	}
 
-	public static int binarySearch(int bottom, int top, int height, int arr[]) {
-
-		while (top > bottom) {
-			int half = (top + bottom) / 2;
+	public static int binarySearch(int bot, int top, int height, int arr[]) {
+		while(top > bot) {
+			int half = (bot + top) / 2;
 			
-			if (arr[half] >= height) {
+			if(arr[half] >= height) {
 				top = half;
 			} else {
-				bottom = half + 1;
+				bot = half + 1;
 			}
-
 		}
-		return arr.length - top;
+		
+		return arr.length - bot;
 	}
 
 }
