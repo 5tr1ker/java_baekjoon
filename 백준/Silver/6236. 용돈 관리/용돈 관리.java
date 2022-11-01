@@ -21,19 +21,17 @@ public class Main {
 			min = Math.max(min, arr[i]);
 		}
 		
-		int result = max;
-		while(max >= min) {
+		while(max > min) {
 			int half = (min + max) / 2;
 			
 			if(binarySearch(half) <= M) {
-				result = half;
-				max = half - 1;
+				max = half;
 			} else {
 				min = half + 1;
 			}
 		}
 		
-		System.out.println(result);
+		System.out.println(min);
 	}
 	
 	public static int binarySearch(int half) {
