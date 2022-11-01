@@ -21,7 +21,7 @@ public class Main {
 			min = Math.max(min, arr[i]);
 		}
 		
-		int result = 0;
+		int result = max;
 		while(max >= min) {
 			int half = (min + max) / 2;
 			
@@ -38,12 +38,13 @@ public class Main {
 	
 	public static int binarySearch(int half) {
 		int count = 1;
-		int money = half;
+		int total = 0;
 		for(int i = 0; i < N; i++) {
-			money -= arr[i];
-			if(money < 0) {
+			if(arr[i] + total > half) {
+				total = arr[i];
 				count++;
-				money = half - arr[i];
+			} else {
+				total += arr[i];
 			}
 		}
 		return count;
