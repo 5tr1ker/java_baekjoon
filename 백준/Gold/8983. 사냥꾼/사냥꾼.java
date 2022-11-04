@@ -57,13 +57,15 @@ public class Main {
 		}
 		
 		if(min > M) {
+			//System.out.println(min + " : " + max);
 			return max;
 		}
 		
 		if(M < N) {
+			//System.out.println(min + " : " + max);
 			return min;
 		}
-		return (Math.abs(sade[min] - x) < Math.abs(sade[max] - x) ? min : max);
+		
+		return min;
 	}
-
 }
