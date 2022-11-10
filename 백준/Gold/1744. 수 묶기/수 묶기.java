@@ -1,8 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 	
@@ -23,31 +20,24 @@ public class Main {
 		}
 		
 		Collections.sort(link1);
-		Collections.sort(link2);
+		Collections.sort(link2 , Collections.reverseOrder());
 	
 		int total = 0;
 		
-		for(int i = 0 ; i < link2.size() ; i += 2 ) {
-			if(i + 1 >= link2.size()) {
-				if(link2.size() == i + 1) {
-					total += link2.get(i);
-				}
-				break;
-			}
+		if(link2.size() % 2 != 0) total += link2.get(0);
+		for(int i = link2.size() - 1 ; i > 0 ; i -= 2 ) {
 			int idx1 = link2.get(i);
-			int idx2 = link2.get(i + 1); 
-			total += Math.max(idx1 * idx2 , idx1 + idx2);
-		}
-		
-		for(int i = link1.size() - 1 ; i > 0 ; i -= 2 ) {
-			int idx1 = link1.get(i);
-			int idx2 = link1.get(i - 1);
-			total += Math.max(idx1 * idx2 , idx1 + idx2);
+			int idx2 = link2.get(i - 1);
+			total += Math.max(idx1 + idx2, idx1 * idx2);
 		}
 		
 		if(link1.size() % 2 != 0) total += link1.get(0);
+		for(int i = link1.size() - 1 ; i > 0 ; i -= 2 ) {
+			int idx1 = link1.get(i);
+			int idx2 = link1.get(i - 1);
+			total += Math.max(idx1 + idx2, idx1 * idx2);
+		}
 		
 		System.out.println(total);
 	}
-
 }
