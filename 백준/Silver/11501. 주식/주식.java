@@ -1,27 +1,36 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-public class Main {		
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int testcase = sc.nextInt();
-		long ans[] = new long[testcase];
-		for( int n = 0 ; n < testcase ; n++ ) {
-			int days = sc.nextInt();
-			long stocks[] = new long[days];
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		StringTokenizer st = null;
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i = 0; i < T; i++) {
+			int N = Integer.parseInt(br.readLine());
+			long arr[] = new long[N];
+			long cnt = 0;
 			long max = 0;
-			for( int i = 0 ; i < days ; i++ ) {
-				stocks[i] = sc.nextInt();
+			st = new StringTokenizer(br.readLine() , " ");
+			for(int j = 0; j < N; j++) {
+				arr[j] = Integer.parseInt(st.nextToken());
 			}
-			for( int i = days-1 ; i >= 0 ; i-- ) {
-				if(stocks[i] > max) {
-					max = stocks[i];
-				}else {
-					ans[n] += (max - stocks[i]);
+			
+			for(int j = N - 1; j >= 0; j--) {
+				if(max < arr[j]) {
+					max = arr[j];
+				} else {
+					cnt += max - arr[j];					
 				}
-			}		
+			}
+			sb.append(cnt + "\n");
 		}
-		for( long i : ans) {
-			System.out.println(i);
-		}
+		System.out.println(sb);
 	}
+
 }
