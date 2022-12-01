@@ -9,19 +9,17 @@ public class Main {
 	public static int arr[];
 	public static int N , M;
 	
-	public static void dfs(int idx) {
-		if(idx == M) {
+	public static void dfs(int depth , int idx) {
+		if(depth == M) {
 			for(int i = 0; i < arr.length; i++) {
 				sb.append(arr[i]).append(" ");
 			}
 			sb.append("\n");
 			return;
 		}
-		
-		for(int i = idx; i <= N; i++) {
-			if (arr[idx - 1] >= i) continue; 
-			arr[idx] = i;
-			dfs(idx + 1);
+		for(int i = idx + 1; i <= N; i++) {
+			arr[depth] = i;
+			dfs(depth + 1 , i);
 		}
 	}
 	
@@ -35,7 +33,7 @@ public class Main {
 		
 		for(int i = 1; i <= N - M + 1; i++) {
 			arr[0] = i;
-			dfs(1);
+			dfs(1 , i);
 		}
 		
 		System.out.println(sb);
