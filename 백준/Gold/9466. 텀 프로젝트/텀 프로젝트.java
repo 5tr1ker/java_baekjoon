@@ -1,42 +1,16 @@
-import java.util.*;
-import java.io.*;
- 
-// https://www.acmicpc.net/problem/9466
- 
-class Main {
-    static int stoi(String s) { return Integer.parseInt(s);}
- 
-    static int n;
-    static int[] arr;
-    static int count = 0;
-    static boolean[] visited;
-    static boolean[] finished;
- 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
- 
-        int tc = stoi(br.readLine());
- 
-        for(int t=0; t<tc; t++) {
-            n = stoi(br.readLine());
-            arr = new int[n+1];
-            visited = new boolean[n+1];
-            finished = new boolean[n+1];
-            count = 0;
- 
-            st = new StringTokenizer(br.readLine());
-            for(int i=1; i<n+1; i++) 
-                arr[i] = stoi(st.nextToken());
- 
-            for(int i=1; i<n+1; i++)
-                dfs(i);
- 
-            System.out.println(n - count);
-        }
-    }
- 
-    static void dfs(int now) { 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+	
+	static int arr[];
+	static boolean visited[];
+	static boolean finished[];
+	static int count = 0;
+	
+	static void dfs(int now) { 
         if(visited[now])
             return;
  
@@ -58,4 +32,30 @@ class Main {
         // 모든 작업이 끝나서 더이상 사용하지 않음
         finished[now] = true;
     }
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		StringTokenizer st;
+		
+		for(int z = 0; z < T; z++) {
+			int N = Integer.parseInt(br.readLine());
+			count = 0;
+			
+			arr = new int[N + 1];
+			visited = new boolean[N + 1];
+			finished = new boolean[N + 1];
+			
+			st = new StringTokenizer(br.readLine() , " ");
+			for(int i = 1; i <= N; i++) {
+				arr[i] = Integer.parseInt(st.nextToken());
+			}
+			
+			for(int i = 1; i <= N; i++) {
+				dfs(i);
+			}
+			
+			System.out.println(N - count);
+		}
+	}
 }
