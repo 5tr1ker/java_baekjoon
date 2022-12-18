@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 class Edge {
@@ -39,29 +41,32 @@ public class Main {
 			list.get(u).add(new Edge(v , w));
 		}
 		
-		boolean[] check = new boolean[V + 1];
 		int weight[] = new int[V + 1];
 		
 		for(int i = 1; i <= V; i++)
 			weight[i] = INF;
 		
-		weight[start] = 0;
-	
-		for(int i = 1; i <= V; i++) {
-			int findVertex = 0;
-			int findWeight = Integer.MAX_VALUE;
-			
-			for(int j = 1; j <= V; j++) {
-				if(weight[j] < findWeight && !check[j]) {
-					findVertex = j;
-					findWeight = weight[j];
-				}
+		PriorityQueue<Edge> queue = new PriorityQueue<Edge>(new Comparator<Edge>() {
+			@Override
+			public int compare(Edge o1, Edge o2) {
+				// TODO Auto-generated method stub
+				return o1.weight - o2.weight;
 			}
-			check[findVertex] = true;
-			// 가장 작은값 찾기
+		});
+		queue.add(new Edge(start, 0));
+		weight[start] = 0;
+		
+		while(!queue.isEmpty()) {
+			Edge edge = queue.poll();
 			
-			for(Edge edge : list.get(findVertex)) {
-				weight[edge.vertex] = Math.min(weight[edge.vertex], weight[findVertex] + edge.weight);
+			if(edge.weight > weight[edge.vertex]) continue;
+			for(int i = 0; i < list.get(edge.vertex).size(); i++) {
+				Edge data = list.get(edge.vertex).get(i);
+				
+				if(weight[data.vertex] > data.weight + edge.weight ) {
+					weight[data.vertex] = data.weight + edge.weight;
+					queue.offer(new Edge(data.vertex , weight[data.vertex]));
+				}
 			}
 		}
 		
