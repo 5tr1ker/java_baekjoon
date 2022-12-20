@@ -31,24 +31,25 @@ public class Main {
 	static boolean flag = false;
 
 	public static void bruthForce(int idx) {
-		if (idx >= 81) {
+		if(idx >= 81) {
 			flag = true;
 			return;
 		}
-
+		
 		int x = idx / 9;
 		int y = idx % 9;
-
-		if (arr[x][y] != 0) {
+		
+		if(arr[x][y] != 0) {
 			bruthForce(idx + 1);
 		} else {
 			for(int i = 1; i <= 9; i++) {
-				if(!check(x , y , i)) continue;
-				
-				arr[x][y] = i;
-				bruthForce(idx + 1);
-				if(flag) return;
-				arr[x][y] = 0;
+				if(check(x , y , i)) {
+					arr[x][y] = i;
+					
+					bruthForce(idx + 1);
+					if(flag) return;
+					arr[x][y] = 0;
+				}
 			}
 		}
 	}
