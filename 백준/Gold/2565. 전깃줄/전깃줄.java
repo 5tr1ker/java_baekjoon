@@ -1,57 +1,64 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.StringTokenizer;
 
-class Cable
-{
-    int start,end;
-
-    public Cable(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
+class Bridge {
+	int start;
+	int end;
+	
+	public Bridge(int start , int end) {
+		this.start = start;
+		this.end = end;
+	}
 }
+
 public class Main {
-    static int N;
-    static Cable [] cables;
-    static int [] dp;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
+	static int N;
+	static int dp[];
+	static Bridge arr[];
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		N = Integer.parseInt(br.readLine());
+		dp = new int[N];
+		arr = new Bridge[N];
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine() , " ");
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+			
+			arr[i] = new Bridge(start, end);
+		}
+		
+		Arrays.sort(arr , new Comparator<Bridge>() {
+			@Override
+			public int compare(Bridge o1, Bridge o2) {
+				return o1.start - o2.start;
+			}
+		});
+		
+		int max = 0;
+		for(int i = 0; i < N; i++)
+			max = Math.max(max, solution(i));
+		
+		
+		System.out.println(N - max);
+	}
+	
+	 static int solution(int n) {
+	        if (dp[n] < 1) {
+	            dp[n] = 1;
 
-        StringTokenizer st;
-        cables = new Cable[N];
-        dp = new int[N];
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int l = Integer.parseInt(st.nextToken());
-            int r = Integer.parseInt(st.nextToken());
+	            for (int i = n + 1; i < N; i++) {
+	                if (arr[n].end < arr[i].end) {
+	                    dp[n] = Math.max(dp[n], solution(i) + 1);
+	                }
+	            }
+	        }
 
-            cables[i] = new Cable(l,r);
-        }
-
-        //좌측값 기준으로 정렬
-        Arrays.sort(cables, (c1, c2) -> c1.start - c2.start);
-
-        int max = 0;
-        for (int i = 0; i < N; i++) {
-            max = Math.max(max, solution(i));
-        }
-
-        System.out.print(N - max);
-    }
-    static int solution(int n) {
-        if (dp[n] < 1) {
-            dp[n] = 1;
-
-            for (int i = n + 1; i < N; i++) {
-                if (cables[n].end < cables[i].end) {
-                    dp[n] = Math.max(dp[n], solution(i) + 1);
-                }
-            }
-        }
-
-        return dp[n];
-    }
+	        return dp[n];
+	    }
 }
