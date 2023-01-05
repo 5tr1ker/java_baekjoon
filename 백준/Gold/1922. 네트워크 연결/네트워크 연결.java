@@ -64,13 +64,17 @@ public class Main {
 		});
 		
 		int weight = 0;
+		int idx = 0;
 		for(int i = 0; i < M; i++) {
 			Point pnt = point[i];
+			
+			if(idx == N - 1) break;
 			
 			int startIdx = findUnion(pnt.start);
 			int endIdx = findUnion(pnt.end);
 			
 			if(startIdx != endIdx) {
+				idx++;
 				weight += pnt.weight;
 				union(startIdx, endIdx);
 			}
