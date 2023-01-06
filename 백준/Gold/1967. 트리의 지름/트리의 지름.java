@@ -1,51 +1,70 @@
-import java.awt.*;
-import java.util.*;
-public class Main{
-    static int n, m;
-    static ArrayList<Node> list[];
-    static boolean[] visit;
-    static int max = 0;
-    static int max_idx = 0;
-    public static void main(String[] args){
-        Scanner scan = new Scanner(System.in);
-        n = scan.nextInt();
-        list = new ArrayList[n+1];
-        for(int i = 0; i <= n; i++){
-            list[i] = new ArrayList<>();
-        }
-        for(int i = 0; i < n-1; i++){
-            int a = scan.nextInt();
-            int b = scan.nextInt();
-            int c = scan.nextInt();
-            list[a].add(new Node(b,c));
-            list[b].add(new Node(a,c));
-        }
-        visit = new boolean[n+1];
-        visit[1] = true;
-        dfs(1,0);
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-        visit = new boolean[n+1];
-        visit[max_idx] = true;
-        dfs(max_idx,0);
-        System.out.println(max);
-    }
-    public static void dfs(int idx, int cnt){
-        if(max < cnt){
-            max = cnt;
-            max_idx = idx;
-        }
-        for (Node a : list[idx]) {
-            if(!visit[a.idx]){
-                visit[a.idx] = true;
-                dfs(a.idx, cnt + a.cnt);
-            }
-        }
-    }
+class Point {
+	int vertex;
+	int weight;
+	
+	public Point(int vertex , int weight) {
+		this.vertex = vertex;
+		this.weight = weight;
+	}
 }
-class Node{
-    int idx, cnt;
-    Node(int idx, int cnt){
-        this.idx = idx;
-        this.cnt = cnt;
-    }
+
+public class Main {
+	
+	static ArrayList<ArrayList<Point>> list = new ArrayList<ArrayList<Point>>();
+	static boolean check[];
+	static int N;
+	static int max = 0;
+	static int maxVertex = 0;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		
+		for(int i = 0; i<=N; i++)
+			list.add(new ArrayList<Point>());
+		
+		StringTokenizer st;
+		for(int i = 0; i < N - 1; i++) {
+			st = new StringTokenizer(br.readLine() , " ");
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+			int weight = Integer.parseInt(st.nextToken());
+			
+			list.get(start).add(new Point(end , weight));
+			list.get(end).add(new Point(start , weight));
+		}
+		
+		check = new boolean[N + 1];
+		check[1] = true;
+		dfs(1 , 0);
+		
+		check = new boolean[N + 1];
+		check[maxVertex] = true;
+		dfs(maxVertex , 0);
+		
+		System.out.println(max);
+		
+	}
+	
+	public static void dfs(int idx , int weight) {
+		if(max <= weight) {
+			max = weight;
+			maxVertex = idx;
+		}
+		
+		for(Point pnt : list.get(idx)) {
+			if(!check[pnt.vertex]) {
+				check[pnt.vertex] = true;
+				dfs(pnt.vertex , weight + pnt.weight);
+			}
+		}
+		
+	}
+	
 }
