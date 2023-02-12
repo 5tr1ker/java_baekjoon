@@ -85,7 +85,7 @@ public class Main {
 		vertexWeight[start] = 0;
 		boolean flag = false;
 		
-		for(int i = 1; i < N; i++) {
+		for(int i = 1; i <= N; i++) {
 			flag = false;
 			
 			for(int j = 1; j <= N; j++) {
