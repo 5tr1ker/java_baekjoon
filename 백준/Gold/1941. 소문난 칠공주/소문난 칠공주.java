@@ -56,42 +56,34 @@ public class Main {
 	
 	// 시작
 	public static void bfs() {
-		Queue<int []> queue = new LinkedList<int []>();
-		boolean check[][] = new boolean[5][5];
-		boolean visited[][] = new boolean[5][5];
-		int count = 0; // BFS 횟수
-		int countS = 0; // S 횟수
-		for(int i = 0; i < 7; i++) {
-			int dx = select[i] / 5;
-			int dy = select[i] % 5;
-			
-			check[dx][dy] = true;
-			if(queue.isEmpty())
-				queue.offer(new int[] {dx , dy});
-		}
-		
-		while(!queue.isEmpty()) {
-			int data[] = queue.poll();
-			
-			for(int i = 0; i < 4; i++) {
-				int dx = data[0] + coorX[i];
-				int dy = data[1] + coorY[i];
-				
-				if(dx < 0 || dy < 0 || dx >= 5 || dy >= 5) continue;
-				
-				if(check[dx][dy] && !visited[dx][dy]) {
-					count++;
-					if(arr[dx][dy] == 'S') countS++;
-					queue.offer(new int[] {dx , dy});
-					visited[dx][dy] = true;
-				}
-			}
-		}
-		
-		if(count >= 7 && countS >= 4) {
-			ans++;
-		}
-		
+		Queue<Integer> q = new LinkedList<>();
+        boolean visited[] = new boolean[7];
+        
+        visited[0] = true;
+        q.add(select[0]);
+        int cnt = 1, sCnt = 0;
+        
+        while(!q.isEmpty()) {
+            int cur = q.poll();
+            if(arr[comY[cur]][comX[cur]] == 'S') sCnt++;
+            
+            for(int i=0; i<4; i++) {
+                for(int next=1; next<7; next++) {
+                    if(!visited[next] && comX[cur]+coorX[i] == comX[select[next]] && comY[cur]+coorY[i] == comY[select[next]]) {
+                        visited[next] = true;
+                        q.add(select[next]);
+                        cnt++;
+                    }
+                }
+            }
+        }
+        
+        /* 7개 모두 연결되어 있다면 */
+        if(cnt == 7) {
+            if(sCnt >=4) {
+                ans++;
+            }
+        }
 	}
 	
 }
