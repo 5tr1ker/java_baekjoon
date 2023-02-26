@@ -5,39 +5,62 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
 
-public class Main {
+class Meeting {
+	int start;
+	int end;
+	
+	public Meeting(int start, int end) {
+		this.start = start;
+		this.end = end;
+	}
 
-	public static void main(String[] args)throws IOException {
+	@Override
+	public String toString() {
+		return "Meeting [start=" + start + ", end=" + end + "]";
+	}
+	
+	
+}
+
+public class Main {
+	
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int testcase = Integer.parseInt(br.readLine());
+		int N = Integer.parseInt(br.readLine());
 		StringTokenizer st;
-		int greed[][] = new int[testcase][2];
+		Meeting[] meet = new Meeting[N];
 		
-		for(int i = 0; i < testcase; i++) {
-			st = new StringTokenizer(br.readLine());
-			greed[i][0] = Integer.parseInt(st.nextToken());
-			greed[i][1] = Integer.parseInt(st.nextToken());
+		
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine(), " ");
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+			
+			meet[i] = new Meeting(start, end);
 		}
 		
-		Arrays.sort(greed , new Comparator<int[]>() {
+		Arrays.sort(meet , new Comparator<Meeting>() {
 			@Override
-			public int compare(int[] o1, int[] o2) {
-				return o1[1]==o2[1] ? o1[0]-o2[0] : o1[1]-o2[1];
+			public int compare(Meeting o1 , Meeting o2) {
+				if(o1.end == o2.end) return o1.start - o2.start;
+				
+				return o1.end - o2.end;
 			}
 		});
 		
-		int count = 0;
-		int standard = 0;
-		for(int i = 0; i < testcase; i++) {
+		int ans = 0;
+		int recent = 0;
+		for(int i = 0; i < N ;i++) {
+			Meeting mt = meet[i];
 			
-			if(standard <= greed[i][0]) {
-				standard = greed[i][1];
-				count++;
+			if(recent <= mt.start) {
+				ans += 1;
+				recent = mt.end;
 			}
-			
 		}
 		
-		System.out.println(count);
+		System.out.println(ans);
+		
 	}
-
+	
 }
