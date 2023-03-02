@@ -15,20 +15,21 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		L = Integer.parseInt(st.nextToken());
-		arr = new int[N + 2]; // 시작지점 + 끝 지점
 		
-		int min = 1 , max = L;
+		arr = new int[N + 2];
+		arr[0] = 0;
+		arr[1] = L;
 		st = new StringTokenizer(br.readLine() , " ");
-		for(int i = 1; i <= N; i++) {
+		for(int i = 2; i < N + 2; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
 		
-		arr[N + 1] = L;
 		Arrays.sort(arr);
+		
+		int min = 1 , max = L;
 		
 		while(min < max) {
 			int half = (min + max) / 2;
-			
 			if(solved(half) > M) {
 				min = half + 1;
 			} else {
