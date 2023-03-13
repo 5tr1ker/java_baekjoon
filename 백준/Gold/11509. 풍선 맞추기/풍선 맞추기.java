@@ -8,28 +8,20 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
+		int arrow[] = new int[1_000_002];
 		StringTokenizer st = new StringTokenizer(br.readLine() , " ");
-		int arrow[] = new int[N];
-		for(int i = 0; i < N; i++) {
-			int balloon = Integer.parseInt(st.nextToken());
-			
-			for(int j = 0; j < N; j++) {
-				if(arrow[j] == balloon + 1) {
-					arrow[j] = balloon;
-					break;
-				} else if(arrow[j] == 0) {
-					arrow[j] = balloon;
-					break;
-				}
-			}
-		}
-		
 		int ans = 0;
 		for(int i = 0; i < N; i++) {
-			if(arrow[i] != 0) ans++;
+			int input = Integer.parseInt(st.nextToken());
+			
+			if(arrow[input + 1] == 0) { // 화살 추가
+				arrow[input]++;
+				ans++;
+			} else {
+				arrow[input + 1]--;
+				arrow[input]++;
+			}
 		}
 		System.out.println(ans);
 	}
-	
-	
 }
