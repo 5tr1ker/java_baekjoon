@@ -24,23 +24,10 @@ public class Main {
 			
 			if(index + 1 >= arr.size()) { // 가장 오른쪽에 있는 수
 				ans += Math.abs(arr.get(index) - arr.get(index - 1));
-				arr.remove(index);
-				continue;
-			}
-			
-			if(index - 1 < 0) { // 가장 왼쪽에 있는 수
+			} else if (index - 1 < 0) { // 가장 왼쪽에 있는 수
 				ans += Math.abs(arr.get(index) - arr.get(index + 1));
-				arr.remove(index);
-				continue;
-			}
-			
-			int left = Math.abs(arr.get(index) - arr.get(index - 1));
-			int right = Math.abs(arr.get(index) - arr.get(index + 1));
-			
-			if(left < right) {
-				ans += left;
 			} else {
-				ans += right;
+				ans += Math.min(Math.abs(arr.get(index) - arr.get(index - 1)), Math.abs(arr.get(index) - arr.get(index + 1)));
 			}
 			arr.remove(index);
 		}
