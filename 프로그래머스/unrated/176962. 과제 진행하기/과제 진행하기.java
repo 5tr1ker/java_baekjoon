@@ -25,44 +25,53 @@ class Solution {
         }
         
         Arrays.sort(homework , new Comparator<Homework>() {
-            
-            @Override
+           @Override
             public int compare(Homework h1 , Homework h2) {
                 return h1.startTime - h2.startTime;
             }
         });
         
-        for(int i = 0; i < homework.length - 1; i++) {
-            int currentTime = homework[i].startTime + homework[i].time;
+        for(int i = 0; i < plans.length; i++) {
+            System.out.println(homework[i].name + " // " + homework[i].startTime + " // " + homework[i].time);
+        }
+        
+        for(int i = 0; i < plans.length - 1; i++) {
+            int current = homework[i].startTime + homework[i].time;
             int next = homework[i + 1].startTime;
             
-            if(currentTime <= next) { // done
+            int term = next - current;
+            System.out.println("term : " + term);
+            if(term < 0) { // not
+                homework[i].time = term * -1;
+                System.out.println("불가능 : " + term*-1);
+                stack.push(i);
+            } else { // done!
                 answer[ans++] = homework[i].name;
-
-                int remain = next - currentTime;
+                int remain = term;
+                System.out.println("done! And Remain : " + remain);
                 while(remain > 0 && !stack.isEmpty()) {
-                    int diff = homework[stack.peek()].time - remain;
-                    homework[stack.peek()].time = Math.max(0 , diff);
-                    System.out.println("major " + homework[stack.peek()].name + " time " + diff);
-                    if(diff <= 0) {
-                        remain = diff * -1;
-                        System.out.println("done : " + remain);
-                        answer[ans++] = homework[stack.pop()].name;
+                    int idx = stack.peek();
+                    int diff = remain - homework[idx].time;
+                    
+                    System.out.println("do More? :  " + diff + " remain : " + remain);
+                    if(diff >= 0) {
+                        answer[ans++] = homework[idx].name;
+                        homework[stack.pop()].time = diff;
+                        remain = diff;
+                        System.out.println("YES! " + diff + " remain : " + remain);
                     } else {
+                        homework[stack.peek()].time -= remain;
                         remain = 0;
-                        System.out.println("no Remain : " +  homework[stack.peek()].time);
                     }
                 }
-            } else { // nt Yet
-                stack.push(i);
-                homework[i].time = currentTime - next;
-                System.out.println("nope : " + homework[i].time + " major : " + homework[i].name);
             }
         }
         
         answer[ans++] = homework[homework.length - 1].name;
         
         while(!stack.isEmpty()) {
+            int i = stack.peek();
+            System.out.println(homework[i].name + " - " + homework[i].startTime + " - " + homework[i].time);
             answer[ans++] = homework[stack.pop()].name;
         }
         
