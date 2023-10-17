@@ -16,6 +16,11 @@ public class Main {
         int ans = 999_999;
         int cnt = 0;
 
+        if(N >= K) {
+            System.out.println((N - K) + "\n1");
+            return;
+        }
+
         queue.offer(N);
 
         while(!queue.isEmpty()) {
@@ -31,21 +36,18 @@ public class Main {
             }
 
             for(int i = 0; i < 3; i++) {
-                int nowIdx = now;
+                int next = now;
 
-                if(i == 0) nowIdx += 1;
-                else if(i == 1) nowIdx -= 1;
-                else nowIdx *= 2;
+                if(i == 0) next += 1;
+                else if(i == 1) next -= 1;
+                else if(i == 2) next *= 2;
 
-                if(nowIdx < 0 || nowIdx > 100000) continue;
-
-                if(time[nowIdx] == 0 || time[nowIdx] >= time[now] + 1) {
-                    queue.offer(nowIdx);
-                    time[nowIdx] = time[now] + 1;
+                if(next < 0 || next > 100000) continue;
+                if(time[next] == 0 || time[next] >= time[now] + 1) {
+                    queue.offer(next);
+                    time[next] = time[now] + 1;
                 }
-
             }
-
         }
 
         System.out.println(ans + "\n" + cnt);
