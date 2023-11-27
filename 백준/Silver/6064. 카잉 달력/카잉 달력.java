@@ -23,8 +23,8 @@ class Main {
                     break;
                 }
             }
-
             sb.append(ans).append("\n");
+
         }
 
         System.out.println(sb);
