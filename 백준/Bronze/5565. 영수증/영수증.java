@@ -1,15 +1,15 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+class Main {
+
+    public static void main(String args[]) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int total = Integer.parseInt(br.readLine());  //총 가격
-        
-        // 9개의 물건들의 값을 총 가격에서 빼준다
-        for (int i = 1; i <= 9; i++) {
+
+        int total = Integer.parseInt(br.readLine());
+        for(int i = 0; i < 9; i++) {
             total -= Integer.parseInt(br.readLine());
         }
-        System.out.print(total);
+        System.out.println(total);
     }
 }
