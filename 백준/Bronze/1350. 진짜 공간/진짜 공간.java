@@ -12,14 +12,9 @@ class Main {
 
         long sum = 0;
         for(int i = 0; i < N; i++) {
-            int disk = Integer.parseInt(st.nextToken());
+            double disk = Double.parseDouble(st.nextToken());
 
-            if(disk != 0) {
-                sum += (disk / size);
-                if(disk % size != 0) {
-                    sum++;
-                }
-            }
+            sum += Math.ceil(disk / size);
         }
 
         System.out.println(size * sum);
