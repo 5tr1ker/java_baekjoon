@@ -1,37 +1,36 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+
 public class Main {
-    public static void main(String[] args) {
-        List<Character> s = new ArrayList<>();
-        List<Character> c = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
 
-        String sentence = sc.nextLine();
-        String code = sc.next();
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        for(int i = 0; i < sentence.length(); i++) {
-            s.add(sentence.charAt(i));
-        }
-        for(int i = 0; i < code.length(); i++) {
-            c.add(code.charAt(i));
-        }
-        int z = 0;
-        char j = ' ';
-        char[] cd = new char[sentence.length()];
-        for(int i = 0; i < cd.length; i++) {
-            cd[i] = s.get(i);
-        }
+        String str = br.readLine();
+        String secret = br.readLine();
+        StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < s.size(); i++) {
-            if(s.size() > c.size()) {
-                c.add(c.get(i));
+        for(int i = 0; i < str.length(); i++) {
+            int ch = str.charAt(i);
+            if(ch == ' ') {
+                sb.append(" ");
+
+                continue;
             }
-            z = c.get(i) - 'a' + 1;
-            cd[i] = (char)(s.get(i) - z);
-            if(cd[i] < 'a') cd[i] += 26;
-            if(s.get(i) == ' ') cd[i] = ' ';
+
+            ch -= secret.charAt(i % secret.length());
+            if(ch < 97) {
+                ch += 97 - 1;
+            }
+            while(ch < 97) {
+                ch += 26;
+            }
+
+            sb.append((char) ch);
         }
-        for(char e : cd) System.out.print(e + "");
+
+        System.out.println(sb);
+
     }
 }
