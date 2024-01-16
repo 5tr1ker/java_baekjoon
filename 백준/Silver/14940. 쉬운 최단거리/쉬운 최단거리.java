@@ -1,80 +1,78 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
+import java.lang.*;
 
-public class Main {
-    private final static int[] DX = { 1, 0, -1, 0 };
-    private final static int[] DY = { 0, -1, 0, 1 };
-    private static int[][] map, distance;
-    private static int m, n;
-    private static boolean[][] isVisited;
-    
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder builder = new StringBuilder();
-        boolean isStartChecked = false;
-        String[] size = reader.readLine().split(" ");
-        n = Integer.parseInt(size[0]);
-        m = Integer.parseInt(size[1]);
-        int startX = -1, startY = -1;
-        
-        map = new int[n][m];
-        distance = new int[n][m];
-        isVisited = new boolean[n][m];
-        
-        for (int i = 0; i < n; i++) {
-            map[i] = Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            if (!isStartChecked) 
-                for (int j = 0; j < m; j++) 
-                    if (map[i][j] == 2) {
-                        isStartChecked = true;
-                        startX = i;
-                        startY = j;
-                        break;
-                    }
-        }
-        
-        bfs(startX, startY);
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) 
-                if (!isVisited[i][j] && map[i][j] == 1)
-                    builder.append(-1 + " ");
-                else 
-                    builder.append(distance[i][j] + " ");
-            builder.append("\n");
-        }
-        
-        System.out.print(builder.toString());
-    }
-    
-    private static void bfs(int x, int y) {
-        Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(x, y));
-        isVisited[x][y] = true;
-        
-        while (!queue.isEmpty()) {
-            Point current = queue.poll();
+class Node {
+    int x , y , weight;
 
-            for (int i = 0; i < 4; i++) {
-                int nextX = current.x + DX[i];
-                int nextY = current.y + DY[i];
-                
-                if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m) continue;
-                if (map[nextX][nextY] == 0) continue;
-                if (isVisited[nextX][nextY]) continue;
-
-                queue.add(new Point(nextX, nextY));
-                distance[nextX][nextY] = distance[current.x][current.y] + 1;
-                isVisited[nextX][nextY] = true;
-            }
-        }
+    public Node(int x , int y, int weight) {
+        this.x = x;
+        this.y = y;
+        this.weight = weight;
     }
 }
 
-class Point {
-    public int x, y;
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+public class Main {
+
+    static int coorX[] = {-1,1,0,0};
+    static int coorY[] = {0,0,-1,1};
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine() , " ");
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int arr[][] = new int[N][M];
+        int result[][] = new int[N][M];
+        boolean check[][] = new boolean[N][M];
+
+        Queue<Node> queue = new LinkedList<>();
+        for(int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine() , " ");
+
+            for(int j = 0; j < M; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
+
+                if(arr[i][j] == 2) {
+                    queue.offer(new Node(i, j, 0));
+                }
+            }
+        }
+        while(!queue.isEmpty()) {
+            Node node = queue.poll();
+
+            for(int i = 0; i < 4; i++) {
+                int dx = node.x + coorX[i];
+                int dy = node.y + coorY[i];
+
+                if(dx < 0 || dx >= N || dy < 0 || dy >= M || check[dx][dy]) {
+                    continue;
+                }
+
+                if(arr[dx][dy] == 1) {
+                    result[dx][dy] = node.weight + 1;
+                    check[dx][dy] = true;
+
+                    queue.offer(new Node(dx, dy, node.weight + 1));
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                if(check[i][j] && arr[i][j] == 1) {
+                    sb.append(result[i][j]).append(" ");
+                } else if(!check[i][j] && arr[i][j] == 1) {
+                    sb.append("-1 ");
+                } else{
+                    sb.append("0 ");
+                }
+            }
+            sb.append("\n");
+        }
+
+        System.out.println(sb);
     }
 }
