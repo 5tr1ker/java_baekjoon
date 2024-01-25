@@ -16,14 +16,16 @@ public class Main {
 
             int N = Integer.parseInt(st.nextToken());
             int K = Integer.parseInt(st.nextToken());
+            int coupon = N , prev = 0;
 
-            int ans = N, coupon = 0;
-            while (ans >= K) {
-                coupon += ans / K;
-                ans = ans / K + ans % K;
+            while(coupon >= K) {
+                N += coupon / K;
+                prev = coupon / K;
+                coupon %= K;
+                coupon += prev;
             }
 
-            System.out.println(N + coupon);
+            System.out.println(N);
         }
     }
 }
